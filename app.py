@@ -15,7 +15,7 @@ st.markdown(
 file = pd.read_csv("Questions.csv")
 data = pd.read_csv("Credentials.csv")
 state = SessionState.get(question_number=0)
-if state.b:
+if state.showIDPass:
     state.student_id = st.text_input("ID: ")
     state.student_password = st.text_input("Password: ")
 
@@ -26,7 +26,7 @@ def main():
         # student_password = st.text_input("Password: ")
         login_cred()
     else:
-        state.b = False
+        state.showIDPass = False
         question_paper()
 
 
@@ -68,13 +68,14 @@ def get_question(question_number):
 
 
 def question_paper():
+    print(state.answers)
     pages_panel()
     if state.done:
         max_score = 0
         for i in file["CorrectPoints"]:
             max_score += int(i)
-        st.subheader(f"Your Score - {state.score}/{max_score}")
-        if state.score == max_score:
+        st.subheader(f"Your Score - {state.totalScore}/{max_score}")
+        if state.totalScore == max_score:
             st.subheader("Perfect!!!")
         i = 0
         for a in data["ID"]:
@@ -93,28 +94,28 @@ def question_paper():
     options = st.radio('Answer:', choices)
 
     col = st.columns(9)
-    button = False
-    button2 = False
-    if not state.question_number == 0:
-        button2 = col[0].button("Back")
+    forward_button = False
+    back_button = False
     if not state.hidden:
-        button = col[1].button("Next")
+        forward_button = col[1].button("Next")
+    if not state.question_number == 0:
+        back_button = col[0].button("Back")
 
-    if button2:
+    if back_button:
         state.question_number -= 1
         raise RerunException(RerunData())
 
-    if button:
+    if forward_button:
         st.write(f"You chose {options}")
         if ans == options:
             if state.question_number not in state.questionsDone:
-                state.submittedAnswer(file["CorrectPoints"][state.question_number])
+                state.submitted_answer(file["CorrectPoints"][state.question_number], options)
         else:
-            state.submittedAnswer(file["WrongPoints"][state.question_number])
+            state.submitted_answer(file["WrongPoints"][state.question_number], options)
         state.done_question()
         if state.question_number == len(file["Questions"]) - 1:
             state.done = True
-            st.write(state.score)
+            st.write(state.totalScore)
             raise RerunException(RerunData())
         state.question_number += 1
         if state.question_number == len(file["Questions"]):

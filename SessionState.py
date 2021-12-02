@@ -43,27 +43,21 @@ class SessionState(object):
         """
         for key, val in kwargs.items():
             setattr(self, key, val)
-        self.score = 0
+        self.totalScore = 0
         self.questionsDone = []
         self.started = False
         self.hidden = False
         self.done = False
-        self.b = True
+        self.showIDPass = True
         self.student_id = None
         self.student_password = None
+        self.answers = {}
 
-    def submittedAnswer(self, a: int):
-        """
-        a is Number of marks if the answer is correct
-        a is -1* Number of marks if the answer is wrong
-        """
-        self.score += a
+    def submitted_answer(self, score: int, answer: int):
+        self.totalScore += score
+        self.answers[self.question_number] = answer
 
     def done_question(self):
-        """
-        appends this question to questionDone,
-        which can be used.
-        """
         self.questionsDone.append(self.question_number)
 
 
