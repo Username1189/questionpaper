@@ -14,9 +14,10 @@ st.markdown(
         """, True)
 file = pd.read_csv("Questions.csv")
 data = pd.read_csv("Credentials.csv")
-student_id = st.text_input("ID: ")
-student_password = st.text_input("Password: ")
 state = SessionState.get(question_number=0)
+if state.b:
+    state.student_id = st.text_input("ID: ")
+    state.student_password = st.text_input("Password: ")
 
 
 def main():
@@ -24,34 +25,34 @@ def main():
         # student_id = st.text_input("ID: ")
         # student_password = st.text_input("Password: ")
         login_cred()
-        raise RerunException(RerunData())
     else:
+        state.b = False
         question_paper()
 
 
 def login_cred():
     found = False
     for a in data["ID"]:
-        if student_id == a:
+        if state.student_id == a:
             found = True
             break
     if not found:
         st.error("ID Not Found")
-        return
+        return "A"
     found = False
     for a in data["Password"]:
-        if student_password == a:
+        if state.student_password == a:
             found = True
             break
     if not found:
         st.error("Password Invalid!!!")
-        return
+        return "A"
     i = 0
     for a in data["ID"]:
-        if a == student_id:
+        if a == state.student_id:
             if int(data["Done Test"][i]) == 1:
                 st.error("You Have Already written the test")
-                return
+                return "A"
         i += 1
     state.started = True
     raise RerunException(RerunData())
@@ -77,13 +78,13 @@ def question_paper():
             st.subheader("Perfect!!!")
         i = 0
         for a in data["ID"]:
-            if a == student_id:
+            if a == state.student_id:
                 data.loc[i, "Done Test"] = 1
                 data.to_csv("Credentials.csv", index=False)
                 break
             i += 1
         print(data)
-        print(student_id)
+        print(state.student_id)
         return "DONE"
 
     q, ans, choices = get_question(state.question_number)

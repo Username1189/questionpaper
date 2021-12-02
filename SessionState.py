@@ -48,6 +48,9 @@ class SessionState(object):
         self.started = False
         self.hidden = False
         self.done = False
+        self.b = True
+        self.student_id = None
+        self.student_password = None
 
     def submittedAnswer(self, a: int):
         """
