@@ -20,6 +20,7 @@ state = SessionState.get(question_number=0)
 def main():
     question_paper()
 
+
 @st.cache
 def get_question(question_number):
     q = file["Questions"][question_number]
@@ -30,6 +31,7 @@ def get_question(question_number):
 
 
 def question_paper():
+    pages_panel()
     if state.done:
         max_score = 0
         for i in file["CorrectPoints"]:
@@ -44,9 +46,17 @@ def question_paper():
     st.header(q)
     options = st.radio('Answer:', choices)
 
+    col = st.columns(9)
     button = False
+    button2 = False
+    if not state.question_number == 0:
+        button2 = col[0].button("Back")
     if not state.hidden:
-        button = st.button("Next")
+        button = col[1].button("Next")
+
+    if button2:
+        state.question_number -= 1
+        raise RerunException(RerunData())
 
     if button:
         st.write(f"You chose {options}")
@@ -65,6 +75,17 @@ def question_paper():
             state.hidden = True
 
         raise RerunException(RerunData())  # widget_state=None
+
+
+def pages_panel():
+    col = st.sidebar.columns(7)
+    i = 0
+    for a in range(len(file["Questions"])):
+        if col[i].button(str(a + 1)):
+            state.question_number = a
+        i += 1
+        if i == len(col):
+            i = 0
 
 
 if __name__ == '__main__':
