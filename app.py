@@ -1,5 +1,6 @@
 import streamlit as st
 import pandas as pd
+import random
 import SessionState
 from streamlit.script_runner import RerunException
 from streamlit.script_request_queue import RerunData
@@ -12,7 +13,7 @@ st.markdown(
             }
         </style>
         """, True)
-file = pd.read_csv("Questions.csv")
+# file = pd.read_csv("Questions.csv")
 data = pd.read_csv("Credentials.csv")
 state = SessionState.get(question_number=0)
 if state.showIDPass:
@@ -58,12 +59,21 @@ def login_cred():
     raise RerunException(RerunData())
 
 
+def get_random_options(a, b, c, d):
+    a = random.sample([a, b, c, d], 4)
+    return a
+
+
 @st.cache
 def get_question(question_number):
-    q = file["Questions"][question_number]
-    ans = file["Ans"][question_number]
-    choices = ["Please select an answer", file["A"][question_number], file["B"][question_number],
-               file["C"][question_number], file["D"][question_number]]
+    q = state.file["Questions"][question_number]
+    ans = state.file["Ans"][question_number]
+    choices = ["Please select an answer"]
+    a = get_random_options(state.file["A"][question_number], state.file["B"][question_number],
+                           state.file["C"][question_number], state.file["D"][question_number])
+    for i in a:
+        choices.append(i)
+
     return q, ans, choices
 
 
@@ -72,7 +82,7 @@ def question_paper():
     pages_panel()
     if state.done:
         max_score = 0
-        for i in file["CorrectPoints"]:
+        for i in state.file["CorrectPoints"]:
             max_score += int(i)
         st.subheader(f"Your Score - {state.totalScore}/{max_score}")
         if state.totalScore == max_score:
@@ -109,16 +119,16 @@ def question_paper():
         st.write(f"You chose {options}")
         if ans == options:
             if state.question_number not in state.questionsDone:
-                state.submitted_answer(file["CorrectPoints"][state.question_number], options)
+                state.submitted_answer(state.file["CorrectPoints"][state.question_number], options)
         else:
-            state.submitted_answer(file["WrongPoints"][state.question_number], options)
+            state.submitted_answer(state.file["WrongPoints"][state.question_number], options)
         state.done_question()
-        if state.question_number == len(file["Questions"]) - 1:
+        if state.question_number == len(state.file["Questions"]) - 1:
             state.done = True
             st.write(state.totalScore)
             raise RerunException(RerunData())
         state.question_number += 1
-        if state.question_number == len(file["Questions"]):
+        if state.question_number == len(state.file["Questions"]):
             state.hidden = True
 
         raise RerunException(RerunData())  # widget_state=None
@@ -127,7 +137,7 @@ def question_paper():
 def pages_panel():
     col = st.sidebar.columns(7)
     i = 0
-    for a in range(len(file["Questions"])):
+    for a in range(len(state.file["Questions"])):
         if col[i].button(str(a + 1)):
             state.question_number = a
         i += 1

@@ -20,6 +20,7 @@ result:
 
 """
 import streamlit.report_thread as ReportThread
+import pandas as pd
 from streamlit.server.server import Server
 
 
@@ -43,6 +44,7 @@ class SessionState(object):
         """
         for key, val in kwargs.items():
             setattr(self, key, val)
+        self.file = pd.read_csv("Questions.csv")
         self.totalScore = 0
         self.questionsDone = []
         self.started = False
