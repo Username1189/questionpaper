@@ -24,6 +24,7 @@ def main():
         # student_id = st.text_input("ID: ")
         # student_password = st.text_input("Password: ")
         login_cred()
+        raise RerunException(RerunData())
     else:
         question_paper()
 
