@@ -1,6 +1,5 @@
 import streamlit as st
 import pandas as pd
-import numpy as np
 import SessionState
 from streamlit.script_runner import RerunException
 from streamlit.script_request_queue import RerunData
@@ -14,11 +13,47 @@ st.markdown(
         </style>
         """, True)
 file = pd.read_csv("Questions.csv")
+data = pd.read_csv("Credentials.csv")
+student_id = st.text_input("ID: ")
+student_password = st.text_input("Password: ")
 state = SessionState.get(question_number=0)
 
 
 def main():
-    question_paper()
+    if not state.started:
+        # student_id = st.text_input("ID: ")
+        # student_password = st.text_input("Password: ")
+        login_cred()
+    else:
+        question_paper()
+
+
+def login_cred():
+    found = False
+    for a in data["ID"]:
+        if student_id == a:
+            found = True
+            break
+    if not found:
+        st.error("ID Not Found")
+        return
+    found = False
+    for a in data["Password"]:
+        if student_password == a:
+            found = True
+            break
+    if not found:
+        st.error("Password Invalid!!!")
+        return
+    i = 0
+    for a in data["ID"]:
+        if a == student_id:
+            if int(data["Done Test"][i]) == 1:
+                st.error("You Have Already written the test")
+                return
+        i += 1
+    state.started = True
+    raise RerunException(RerunData())
 
 
 @st.cache
@@ -39,6 +74,15 @@ def question_paper():
         st.subheader(f"Your Score - {state.score}/{max_score}")
         if state.score == max_score:
             st.subheader("Perfect!!!")
+        i = 0
+        for a in data["ID"]:
+            if a == student_id:
+                data.loc[i, "Done Test"] = 1
+                data.to_csv("Credentials.csv", index=False)
+                break
+            i += 1
+        print(data)
+        print(student_id)
         return "DONE"
 
     q, ans, choices = get_question(state.question_number)

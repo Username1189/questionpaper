@@ -45,6 +45,7 @@ class SessionState(object):
             setattr(self, key, val)
         self.score = 0
         self.questionsDone = []
+        self.started = False
         self.hidden = False
         self.done = False
 
