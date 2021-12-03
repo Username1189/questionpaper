@@ -16,5 +16,8 @@ class Admin:
         st.download_button(
             label="Download data as CSV",
             data=csv,
-            file_name='results.csv',
+            file_name='Results.csv',
             mime='text/csv')
+        if st.button("Clear results"):
+            empty = {"ID": [], "Score": []}
+            pd.DataFrame.from_dict(empty).to_csv("Results.csv")
