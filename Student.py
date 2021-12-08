@@ -168,6 +168,8 @@ class Student:
             back_button = col[0].button("Back")
         if not self.state.question_number == len(self.state.file["Questions"]):
             forward_button = col[1].button("Save&Next")
+        elif self.state.question_number == len(self.state.file["Questions"])-1:
+            forward_button = col[1].button("Submit")
 
         if back_button:
             self.state.question_number -= 1
@@ -184,6 +186,7 @@ class Student:
             raise RerunException(RerunData())  # widget_state=None
 
     def pages_panel(self):
+        st.container()
         col = st.sidebar.columns(7)
         i = 0
         for a in range(len(self.state.file["Questions"])):
@@ -191,3 +194,6 @@ class Student:
                 self.state.question_number = a
                 raise RerunException(RerunData())
             i += 1
+        if st.sidebar.button("Submit"):
+            self.state.done = True
+            raise RerunException(RerunData())
