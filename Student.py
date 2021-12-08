@@ -41,6 +41,8 @@ class Student:
             self.question_paper()
 
     def login_cred(self):
+        if self.state.student_id == "" or self.state.student_password == "":
+            return
         if self.state.student_id == "admin" and self.state.student_password == "admin":
             admin = Admin()
             admin.show()
@@ -73,15 +75,27 @@ class Student:
 
     def calc_tot_score(self):
         score = 0
-        i = 0
         for question_number, ans in self.state.answers.items():
-            if self.state.correctAns[question_number] == ans:
-                score += self.state.correctPoints[i]
-            elif ans == "asdfghjkl":
-                pass
-            else:
-                score += self.state.wrongPoints[i]
-            i += 1
+            if ans != ["asdfghjkl"] and ans != []:
+                correct = True
+                for a in ans:
+                    if str(self.state.correctAns[question_number]).find(a) == -1:
+                        correct = False
+                        break
+                if correct:
+                    score += self.state.correctPoints[question_number]
+                else:
+                    score += self.state.wrongPoints[question_number]
+        # score = 0
+        # i = 0
+        # for question_number, ans in self.state.answers.items():
+        #     if self.state.correctAns[question_number] == ans:
+        #         score += self.state.correctPoints[i]
+        #     elif ans == "asdfghjkl":
+        #         pass
+        #     else:
+        #         score += self.state.wrongPoints[i]
+        #     i += 1
 
         return score
 
@@ -92,7 +106,7 @@ class Student:
             for i in self.state.file["CorrectPoints"]:
                 max_score += int(i)
             score = self.calc_tot_score()
-            st.subheader(f"Your Score - {score}/{max_score}")
+            st.subheader(f"Your Score : {score}/{max_score}")
 
             self.resultsfile = pd.read_csv("Results.csv")
             self.results = {"ID": [], "Score": []}
@@ -116,44 +130,56 @@ class Student:
 
         question = self.questions[self.state.question_number]
 
-        st.header(question.q)
+        col1, col2 = st.columns(2)
+        col1.header(question.q)
+        # mark = col2.checkbox("Mark For Review")
+        # self.state.markedForReview[self.state.question_number] = mark
         if self.state.question_number in self.state.answers:
             i = 0
             for a in question.choices:
                 if a == self.state.answers[self.state.question_number]:
                     break
                 i += 1
-            options = st.radio('Answer:', question.choices, i)
+            if self.state.file["MultipleAnswers"][self.state.question_number].lower() == "yes":
+                options = []
+                for j in range(1, 5):
+                    cond = False
+                    if j == i:
+                        cond = st.checkbox(question.choices[j], True, key=j)
+                    else:
+                        cond = st.checkbox(question.choices[j], key=j)
+                    if cond:
+                        options.append(question.choices[j])
+            else:
+                options = [st.radio('Answer:', question.choices, i)]
         else:
-            options = st.radio('Answer:', question.choices)
+            if self.state.file["MultipleAnswers"][self.state.question_number].lower() == "yes":
+                options = []
+                for j in range(1, 5):
+                    if st.checkbox(question.choices[j], key=j):
+                        options.append(question.choices[j])
+            else:
+                options = [st.radio('Answer:', question.choices)]
 
         col = st.columns(9)
         forward_button = False
         back_button = False
-        if not self.state.hidden:
-            forward_button = col[1].button("Next")
         if not self.state.question_number == 0:
             back_button = col[0].button("Back")
+        if not self.state.question_number == len(self.state.file["Questions"]):
+            forward_button = col[1].button("Save&Next")
 
         if back_button:
             self.state.question_number -= 1
             raise RerunException(RerunData())
 
         if forward_button:
-            st.write(f"You chose {options}")
-            if question.ans == options:
-                if self.state.question_number not in self.state.questionsDone:
-                    self.state.submitted_answer(options, question.ans)
-            else:
-                self.state.submitted_answer(options, question.ans)
+            self.state.submitted_answer(options, question.ans)
             self.state.done_question()
             if self.state.question_number == len(self.state.file["Questions"]) - 1:
                 self.state.done = True
-                st.write(self.state.totalScore)
                 raise RerunException(RerunData())
             self.state.question_number += 1
-            if self.state.question_number == len(self.state.file["Questions"]):
-                self.state.hidden = True
 
             raise RerunException(RerunData())  # widget_state=None
 
@@ -163,6 +189,5 @@ class Student:
         for a in range(len(self.state.file["Questions"])):
             if col[i].button(str(a + 1)):
                 self.state.question_number = a
+                raise RerunException(RerunData())
             i += 1
-            if i == len(col):
-                i = 0

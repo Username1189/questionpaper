@@ -21,3 +21,5 @@ class Admin:
         if st.button("Clear results"):
             empty = {"ID": [], "Score": []}
             pd.DataFrame.from_dict(empty).to_csv("Results.csv")
+        if st.button("Create New Test"):
+            st.file_uploader("Test Questions", "text/csv")

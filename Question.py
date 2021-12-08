@@ -7,19 +7,22 @@ def get_random_options(a, b, c, d):
     return a
 
 
+@st.cache
+def get_question(state):
+    q = str(state.question_number+1) + ". " + state.file["Questions"][state.question_number]
+    ans = state.file["Ans"][state.question_number]
+    choices = ["Please select an answer"]
+    a = get_random_options(state.file["A"][state.question_number],
+                           state.file["B"][state.question_number],
+                           state.file["C"][state.question_number],
+                           state.file["D"][state.question_number])
+    for i in a:
+        choices.append(str(i))
+
+    return q, ans, choices
+
+
 class Question:
     def __init__(self, state):
         self.state = state
-        self.q, self.ans, self.choices = self.get_question(state.question_number)
-
-    @st.cache
-    def get_question(self, question_number):
-        q = self.state.file["Questions"][question_number]
-        ans = self.state.file["Ans"][question_number]
-        choices = ["Please select an answer"]
-        a = get_random_options(self.state.file["A"][question_number], self.state.file["B"][question_number],
-                               self.state.file["C"][question_number], self.state.file["D"][question_number])
-        for i in a:
-            choices.append(i)
-
-        return q, ans, choices
+        self.q, self.ans, self.choices = get_question(self.state)
