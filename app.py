@@ -1,10 +1,10 @@
 import streamlit as st
-from PIL import Image
 from Student import Student
 
 
 def main():
-    st.set_page_config("MCQ question paper", "chart_with_upwards_trend")
+    # img = Image.open("logo1.png")
+    st.set_page_config(page_title="MCQ question paper")
     student = Student()
     student.show()
 
