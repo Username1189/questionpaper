@@ -189,6 +189,5 @@ class Student:
         for a in range(len(self.state.file["Questions"])):
             if col[i].button(str(a + 1)):
                 self.state.question_number = a
+                raise RerunException(RerunData())
             i += 1
-            if i == len(col):
-                i = 0
