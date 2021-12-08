@@ -78,10 +78,11 @@ class Student:
         for question_number, ans in self.state.answers.items():
             if ans != ["asdfghjkl"] and ans != []:
                 correct = True
-                for a in ans:
-                    if str(self.state.correctAns[question_number]).find(a) == -1:
-                        correct = False
-                        break
+                answers = str(self.state.correctAns[question_number]).split(",")
+                ans.sort()
+                answers.sort()
+                if ans != answers:
+                    correct = False
                 if correct:
                     score += self.state.correctPoints[question_number]
                 else:
@@ -134,7 +135,8 @@ class Student:
         col1.header(question.q)
         # mark = col2.checkbox("Mark For Review")
         # self.state.markedForReview[self.state.question_number] = mark
-        if self.state.question_number in self.state.answers:
+        if self.state.question_number in self.state.answers.keys() and \
+           self.state.answers[self.state.question_number] != ["asdfghjkl"]:
             i = 0
             for a in question.choices:
                 if a == self.state.answers[self.state.question_number]:
@@ -151,6 +153,7 @@ class Student:
                     if cond:
                         options.append(question.choices[j])
             else:
+                st.write()
                 options = [st.radio('Answer:', question.choices, i)]
         else:
             if self.state.file["MultipleAnswers"][self.state.question_number].lower() == "yes":
@@ -168,7 +171,7 @@ class Student:
             back_button = col[0].button("Back")
         if not self.state.question_number == len(self.state.file["Questions"]):
             forward_button = col[1].button("Save&Next")
-        elif self.state.question_number == len(self.state.file["Questions"])-1:
+        elif self.state.question_number == len(self.state.file["Questions"]) - 1:
             forward_button = col[1].button("Submit")
 
         if back_button:
