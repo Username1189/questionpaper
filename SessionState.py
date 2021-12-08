@@ -57,14 +57,15 @@ class SessionState(object):
         self.correctPoints = {}
         self.wrongPoints = {}
         self.answers = {}
+        self.markedForReview = {}
 
     def submitted_answer(self, answer, correct_ans):
         correct_points = self.file["CorrectPoints"][self.question_number]
         wrong_points = self.file["WrongPoints"][self.question_number]
-        if answer == "Please select an answer":
-            self.answers[self.question_number] = "asdfghjkl"
+        if answer == ["Please select an answer"]:
+            self.answers[self.question_number] = ["asdfghjkl"]
         else:
-            self.answers[self.question_number] = int(answer)
+            self.answers[self.question_number] = answer
         self.correctAns[self.question_number] = correct_ans
         self.correctPoints[self.question_number] = correct_points
         self.wrongPoints[self.question_number] = wrong_points
