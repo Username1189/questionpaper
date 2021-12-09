@@ -137,25 +137,27 @@ class Student:
         # self.state.markedForReview[self.state.question_number] = mark
         if self.state.question_number in self.state.answers.keys() and \
            self.state.answers[self.state.question_number] != ["asdfghjkl"]:
-            i = 0
-            for a in question.choices:
-                if a == self.state.answers[self.state.question_number]:
-                    break
-                i += 1
+            ies = []
+            for ans in self.state.answers[self.state.question_number]:
+                i = 0
+                for a in question.choices:
+                    if a == ans:
+                        ies.append(i)
+                        break
+                    i += 1
             if self.state.file["MultipleAnswers"][self.state.question_number].lower() == "yes":
                 options = []
                 for j in range(1, 5):
                     cond = False
-                    if j == i:
+                    if j == ies[j-1]:
                         cond = st.checkbox(question.choices[j], True, key=j)
                     else:
                         cond = st.checkbox(question.choices[j], key=j)
                     if cond:
                         options.append(question.choices[j])
             else:
-                st.write()
                 if self.state.answers[self.state.question_number] != ["asdfghjkl"]:
-                    options = [st.radio('Answer:', question.choices, i)]
+                    options = [st.radio('Answer:', question.choices, ies[0])]
                 else:
                     options = [st.radio('Answer:', question.choices)]
         else:
