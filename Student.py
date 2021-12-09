@@ -76,7 +76,7 @@ class Student:
     def calc_tot_score(self):
         score = 0
         for question_number, ans in self.state.answers.items():
-            if ans != ["asdfghjkl"] and ans != []:
+            if ans != ["asdfghjkl"]:# and ans != []:
                 correct = True
                 answers = str(self.state.correctAns[question_number]).split(",")
                 ans.sort()
@@ -154,7 +154,10 @@ class Student:
                         options.append(question.choices[j])
             else:
                 st.write()
-                options = [st.radio('Answer:', question.choices, i)]
+                if self.state.answers[self.state.question_number] != ["asdfghjkl"]:
+                    options = [st.radio('Answer:', question.choices, i)]
+                else:
+                    options = [st.radio('Answer:', question.choices)]
         else:
             if self.state.file["MultipleAnswers"][self.state.question_number].lower() == "yes":
                 options = []
