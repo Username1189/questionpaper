@@ -161,7 +161,7 @@ class Student:
                 else:
                     options = [st.radio('Answer:', question.choices)]
         else:
-            if self.state.file["MultipleAnswers"][self.state.question_number].lower() == "yes":
+            if str(self.state.file["Ans"][self.state.question_number]).find(",") != -1:
                 options = []
                 for j in range(1, 5):
                     if st.checkbox(question.choices[j], key=j):
