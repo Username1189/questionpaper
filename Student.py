@@ -202,6 +202,3 @@ class Student:
                 self.state.question_number = a
                 raise RerunException(RerunData())
             i += 1
-        if st.sidebar.button("Submit"):
-            self.state.done = True
-            raise RerunException(RerunData())
