@@ -1,6 +1,6 @@
 Questions,A,B,C,D,Ans,CorrectPoints,WrongPoints
 What is 1+1,5,4,2,3,2,5,0
 What is 22+33,Fifty-Five,2,3,55,"55,Fifty-Five",5,0
-What is 13+14,27,12,32,Thirty-Two,"27,",5,0
+What is 13+14,27,12,32,33,27,5,0
 What is 1*n,n,2n,1n,0,"n,1n",5,0
 What is 1^n,0,1,n,N^2,1,5,0
