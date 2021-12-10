@@ -4,23 +4,36 @@ from streamlit.script_request_queue import RerunData
 import SessionState
 import pandas as pd
 
+st.set_page_config(page_title="MCQ question paper")
+st.markdown(""" <style>
+#MainMenu {visibility: hidden;}
+footer {visibility: hidden;}
+</style> """, unsafe_allow_html=True)
 st.markdown(
-            """ <style>
-                    div[role="radiogroup"] >  :first-child{
-                        display: none !important;
-                    }
-                </style>
-                """, True)
+    """ <style>
+            div[role="radiogroup"] >  :first-child{
+                display: none !important;
+            }
+        </style>
+        """, True)
 
 state = SessionState.get()
 data = pd.read_csv('Credentials.csv')
+
+
+def admin():
+    if st.button("Clear Results"):
+        results_dict = {"ID": [], "Score": []}
+        results_df = pd.DataFrame.from_dict(results_dict)
+        results_df.to_csv("Results.csv", index=False)
+    st.download_button("Download Results", pd.read_csv("Results.csv"), "Results.csv", "text/csv")
+
 
 def login_cred():
     if state.student_id == "" or state.student_password == "":
         return
     if state.student_id == "admin" and state.student_password == "admin":
-        admin = admin()
-        admin.show()
+        admin()
         return "ADMIN"
     found = False
     for a in data["ID"]:
@@ -49,56 +62,61 @@ def login_cred():
     state.showIDPass = False
     raise RerunException(RerunData())
 
+
 def calc_score():
     score = 0
     for i in range(len(state.file["Questions"])):
-        correctAns = str(state.file["Ans"][i]).split(",")
-        correctAns.sort()
+        correct_ans = str(state.file["Ans"][i]).split(",")
+        correct_ans.sort()
         a = False
         try:
-            asdfghjkl = state.answers[i]
+            state.answers[i] = state.answers[i]
         except KeyError:
             a = True
         if not a:
-            if correctAns == state.answers[i]:
+            if correct_ans == state.answers[i]:
                 score += state.file["CorrectPoints"][i]
-            elif state.answers[i] == [] or state.answers[i] == "DONTSHOW":
+            elif state.answers[i] == [] or state.answers[i] == "Don't Show This":
                 pass
             else:
                 score += state.file["WrongPoints"][i]
     return score
 
+
 def question_paper():
     if state.done:
         st.balloons()
         st.header("Score: " + str(calc_score()))
-        resultsDict = {"ID": [], "Score": []}
+        results_dict = {"ID": [], "Score": []}
         results = pd.read_csv('Results.csv')
         for a in results["ID"]:
-            resultsDict["ID"].append(a)
+            results_dict["ID"].append(a)
         for a in results["Score"]:
-            resultsDict["Score"].append(a)
-        resultsDict["ID"].append(state.student_id)
-        resultsDict["Score"].append(calc_score())
-        resultsDF = pd.DataFrame.from_dict(resultsDict)
-        resultsDF.to_csv("Results.csv", index=False)
+            results_dict["Score"].append(a)
+        results_dict["ID"].append(state.student_id)
+        results_dict["Score"].append(calc_score())
+        results_df = pd.DataFrame.from_dict(results_dict)
+        results_df.to_csv("Results.csv", index=False)
         return None
     st.header('Question Paper')
     for i in range(len(state.file['Questions'])):
-        st.subheader(str(i+1) + ". " + state.file['Questions'][i])
+        st.subheader(str(i + 1) + ". " + state.file['Questions'][i])
         if str(state.file['Ans'][i]).find(',') != -1:
-            selectedAns = []
-            choiceNames = ['A', 'B', 'C', 'D']
+            selected_ans = []
+            choice_names = ['A', 'B', 'C', 'D']
+            st.write("Answer:")
             for j in range(4):
-                if st.checkbox(str(state.file[choiceNames[j]][i]), key=str(j)+str(i)):
-                    selectedAns.append(str(state.file[choiceNames[j]][i]))
-            selectedAns.sort()
-            state.answers[i] = selectedAns
+                if st.checkbox(str(state.file[choice_names[j]][i]), key=str(j) + str(i)):
+                    selected_ans.append(str(state.file[choice_names[j]][i]))
+            selected_ans.sort()
         else:
-            selectedAns = [st.radio("Answer:", ["DONTSHOW", state.file['A'][i], state.file['B'][i], state.file['C'][i], state.file['D'][i]])]
+            selected_ans = [st.radio("Answer:", ["Don't Show This", state.file['A'][i], state.file['B'][i], state.file['C'][i],
+                                          state.file['D'][i]])]
+        state.answers[i] = selected_ans
     if st.button('Submit'):
         state.done = True
         raise RerunException(RerunData())
+
 
 def main():
     if state.showIDPass:
