@@ -8,8 +8,7 @@ def main():
     #MainMenu {visibility: hidden;}
     footer {visibility: hidden;}
     </style> """, unsafe_allow_html=True)
-    student = Student()
-    student.show()
+    Student().show()
 
 
 if __name__ == '__main__':

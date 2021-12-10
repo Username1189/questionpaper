@@ -1,3 +1,4 @@
+from streamlit.type_util import pyarrow_table_to_bytes
 import SessionState
 from Question import Question
 from Admin import Admin
@@ -5,7 +6,6 @@ import streamlit as st
 import pandas as pd
 from streamlit.script_runner import RerunException
 from streamlit.script_request_queue import RerunData
-
 
 class Student:
     def __init__(self):
@@ -131,41 +131,48 @@ class Student:
 
         question = self.questions[self.state.question_number]
 
-        col1, col2 = st.columns(2)
-        col1.header(question.q)
+        # col1, col2 = st.columns(2)
+        st.header(question.q)
         # mark = col2.checkbox("Mark For Review")
         # self.state.markedForReview[self.state.question_number] = mark
-        if self.state.question_number in self.state.answers.keys() and \
-           self.state.answers[self.state.question_number] != ["asdfghjkl"]:
-            ies = []
-            for ans in self.state.answers[self.state.question_number]:
-                i = 0
-                for a in question.choices:
-                    if a == ans:
-                        ies.append(i)
-                        break
-                    i += 1
-            if str(self.state.file["Ans"][self.state.question_number]).find(",") != -1:
+        if str(self.state.file["Ans"][self.state.question_number]).find(",") != -1:
+            if self.state.question_number in self.state.answers.keys() and self.state.answers[self.state.question_number] != ["asdfghjkl"]:
+                ies = []
+                for ans in  self.state.answers[self.state.question_number]:
+                    i = 0
+                    for a in question.choices:
+                        if a == self.state.answers[self.state.question_number]:
+                            break
+                        i+=1
+                    ies.append(i)
                 options = []
                 for j in range(1, 5):
-                    cond = False
-                    if j == ies[j-1]:
-                        cond = st.checkbox(question.choices[j], True, key=j)
-                    else:
-                        cond = st.checkbox(question.choices[j], key=j)
-                    if cond:
+                    try:
+                        if ies[j-1] == j:
+                            st.checkbox(question.choices[j], True, key=j)
+                            options.append(question.choices[j])
+                        else:
+                            if st.checkbox(question.choices[j], key=j):
+                                options.append(question.choices[j])
+                    except IndexError:
+                        st.checkbox(question.choices[j], True, key=j)
                         options.append(question.choices[j])
             else:
-                if self.state.answers[self.state.question_number] != ["asdfghjkl"]:
-                    options = [st.radio('Answer:', question.choices, ies[0])]
-                else:
-                    options = [st.radio('Answer:', question.choices)]
-        else:
-            if str(self.state.file["Ans"][self.state.question_number]).find(",") != -1:
                 options = []
                 for j in range(1, 5):
                     if st.checkbox(question.choices[j], key=j):
                         options.append(question.choices[j])
+
+            if options == []:
+                options = "Plese select an answer"
+        else:
+            if self.state.question_number in self.state.answers.keys() and self.state.answers[self.state.question_number] != ["asdfghjkl"]:
+                i = 0
+                for a in question.choices:
+                    if a == self.state.answers[self.state.question_number]:
+                        break
+                    i+=1
+                options = [st.radio('Answer:', question.choices), i]
             else:
                 options = [st.radio('Answer:', question.choices)]
 
