@@ -46,32 +46,12 @@ class SessionState(object):
             setattr(self, key, val)
         self.file = pd.read_csv("Questions.csv")
         self.totalScore = 0
-        self.questionsDone = []
         self.started = False
-        self.hidden = False
-        self.done = False
         self.showIDPass = True
         self.student_id = None
         self.student_password = None
-        self.correctAns = {}
-        self.correctPoints = {}
-        self.wrongPoints = {}
         self.answers = {}
-        self.markedForReview = {}
-
-    def submitted_answer(self, answer, correct_ans):
-        correct_points = self.file["CorrectPoints"][self.question_number]
-        wrong_points = self.file["WrongPoints"][self.question_number]
-        if answer == ["Please select an answer"]:
-            self.answers[self.question_number] = ["asdfghjkl"]
-        else:
-            self.answers[self.question_number] = answer
-        self.correctAns[self.question_number] = correct_ans
-        self.correctPoints[self.question_number] = correct_points
-        self.wrongPoints[self.question_number] = wrong_points
-
-    def done_question(self):
-        self.questionsDone.append(self.question_number)
+        self.done = False
 
 
 def get(**kwargs):
