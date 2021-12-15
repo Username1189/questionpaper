@@ -1,6 +1,101 @@
 Questions,A,B,C,D,Ans,CorrectPoints,WrongPoints
-What is 1+1,5,4,2,3,2,5,0
-What is 22+33,Fifty-Five,2,3,55,"55,Fifty-Five",5,0
-What is 13+14,27,12,32,33,27,5,0
-What is 1*n,n,2n,1n,0,"n,1n",5,0
-What is n if n^2+n = 0,0,-1,4,10,"0,-1",5,0
+ A developer has the following code:try {List nameList;Account a;String s = a.Name;nameList.add(s);} catch (ListException le ) {System.debug(' List Exception ');} catch (NullPointerException npe) {System.debug(' NullPointer Exception ');} catch (Exception e) {System.debug(' Generic Exception ');} What message will be logged?. Discuss,A. List Exception,B. NullPointer Exception,C. Generic Exception,D. No message is logged,B. NullPointer Exception,5,0
+ A developer in a Salesforce org with 100 Accounts executes the following code using the Developer console: Account myAccount = new Account(Name = 'MyAccount'); Insert myAccount; For (Integer x = 0; x < 150; x++) {Account newAccount = new Account (Name='MyAccount' + x); try {Insert newAccount;} catch (Exception ex) {System.debug (ex) ; } } insert new Account (Name='myAccount');How many accounts are in the org after this code is run?Discuss,A. 101,B. 100,C. 102,D. 252,B. 100,5,0
+ In which order does Salesforce execute events upon saving a record?,A. Before Triggers; Validation Rules; After Triggers; Assignment Rules; Workflow Rules; Commit,B. Validation Rules; Before Triggers; After Triggers; Workflow Rules; Assignment Rules; Commit,C. Before Triggers; Validation Rules; After Triggers; Workflow Rules; Assignment Rules; Commit,D. Validation Rules; Before Triggers; After Triggers; Assignment Rules; Workflow Rules; Commit,A. Before Triggers; Validation Rules; After Triggers; Assignment Rules; Workflow Rules; Commit,5,0
+" The initial value for a number field on a record is 1. A user updated the value of the number field to 10. This action invokes a workflow field update, which changes the value of the number field to 11. After the workflow field update, an update trigger fires.What is the value of the number field of the object that is obtained from Trigger.old? ",A. Null,B. 11,C. 1,D. 10,C. 1,5,0
+ What is a capability of the Developer Console?,"A. Execute Anonymous Apex code, Create/Edit code, view Debug Logs.","B. Execute Anonymous Apex code, Run REST API, create/Edit code.","C. Execute Anonymous Apex code, Create/Edit code, Deploy code changes.","D. Execute Anonymous Apex code, Run REST API, deploy code changes.","A. Execute Anonymous Apex code, Create/Edit code, view Debug Logs.",5,0
+ What is a valid source and destination pair that can send or receive change sets? (Choose 2),A. Developer Edition to Sandbox ,B. Sandbox to Production ,C. Sandbox to Sandbox ,D. Developer Edition to Production,0,,
+" What is an accurate constructor for a custom controller named ""MyController""?",A. public MyController () { account = new Account () ;  ,B. public MyController (sObject obj) { account = (Account) obj; } ,C. public MyController (List objects) { accounts = (List ) objects; } ,D. public MyController (ApexPages.StandardController stdController) { account = (Account) stdController.getRecord(); },A. public MyController () { account = new Account () ;  ,,
+ What is the proper process for an Apex unit test?,A. Query for test data using SeeAllData = true. Call the method being tested. Verify that the results are correct.,B. Query for test data using SeeAllData = true. Execute runAllTests(). Verify that the results are correct.,C. Create data for testing. Execute runAllTests(). Verify that the results are correct.,D. Create data for testing. Call the method being tested. Verify that the results are correct.,D. Create data for testing. Call the method being tested. Verify that the results are correct.,,
+ What is the proper process for an Apex unit test?,A. Query for test data using SeeAllData = true. Call the method being tested. Verify that the results are correct.,B. Query for test data using SeeAllData = true. Execute runAllTests(). Verify that the results are correct.,C. Create data for testing. Execute runAllTests(). Verify that the results are correct.,D. Create data for testing. Call the method being tested. Verify that the results are correct.,D. Create data for testing. Call the method being tested. Verify that the results are correct.,,
+ What is the use of Login IP Range?,A. Login IP is used to restrict user from logging in Salesforce,B. Does not control login access for a user profile,C. Prevent users to login into specified application.,D. Allows only specified users into Salesforce Org.,A. Login IP is used to restrict user from logging in Salesforce,,
+ What is the value of x after the code segment executes?String x = 'A';Integer i = 10;if ( i < 15 ) {i = 15;x = 'B';} else if ( i < 20 ) {x = 'C';} else {x = 'D'; },A. D ,B. A ,C. B ,D. C,C. B ,,
+ What is use of <apex:component> in Pages?,A. To define Custom Component,B. To defined standard component,C. To use it in email template,D. To refer within lightning app builder.,A. To define Custom Component,,
+ Which Apex collection is used to ensure all values are unique?,A. Set,B. Array,C. List,D. Map,A. Set,,
+ Which control statement should a developer use to implement a set of code that executes for every record in the recordset without performing a size() or .length() method call when the number of record in a recordset is unknown?,"A. For (init_stmt, exit_condition; increment_stmt) { }",B. Do { } While (Condition),C. For (variable : list_or_set) { },D. While (Condition) { . },C. For (variable : list_or_set) { },,
+ Which method is better for searching across multiple objects?,A. Global Search,B. SOQL,C. Using Apex,D. Trigger,A. Global Search,,
+ Which option would a developer use to display the Accounts created in the current week and the number of related Contacts using a debug statement in Apex? Discuss,"A. For(Account acc: [SELECT Id, Name,(SELECT Id, Name FROM Contacts) FROM Account WHERE CreatedDate = THIS_WEEK]) { List cons = acc.Contacts; System.debug(acc.Name + ‘ has ’ + cons.size() + ‘Contacts’; }","B. For(Account acc: [SELECT Id, Name, (SELECT Id, Name FROM Contacts) FROM Account WHERE CreatedDate = CURRENT_WEEK]){ List cons = acc.Contacts; System.debug(acc.Name + ‘ has ‘ + cons.size() + ‘Contacts’); }","C. For(Account acc:[SELECT Id, Name, Account.Contacts FROM Account WHERE CreatedDate = CURRENT_WEEK]) { List cons = acc.Account.Contacts; System.debug(acc.Name + ‘ has ‘ + cons.size() + ‘Contacts’); }","D. For(Account acc: [SELECT Id, Name, Account.Contacts FROM Account WHERE CreatedDate = THIS_WEEK]){ List cons = acc.Account.Contacts; System.debug(acc.Name + ‘ has ‘ + cons.size() + ‘Contacts’ }","A. For(Account acc: [SELECT Id, Name,(SELECT Id, Name FROM Contacts) FROM Account WHERE CreatedDate = THIS_WEEK]) { List cons = acc.Contacts; System.debug(acc.Name + ‘ has ’ + cons.size() + ‘Contacts’; }",,
+"A developer created an email service and wants to deploy the classes it references in  production.
+How can the developer write a test method to sufficiently test these classes?
+",The developer uses the Messaging.sendEmail() method to send an email to the designated address for the email service.,Classes that only contain email services are not subject to Apex code coverage requirements,Developer creates Mesaging.InboundEmail and Messaging.InbondEnvelop object and pass them  to the Messaging.InboundEmailHandler class,"The developer creates a Messaging.outboundEmail object, pass it to Messaging.sendEmail method of the Messaging.InboundEmailHandler class",Developer creates Mesaging.InboundEmail and Messaging.InbondEnvelop object and pass them  to the Messaging.InboundEmailHandler class,,
+"A financial company provides financial services to individuals with high net profit.They use Salesforce.com to track their client interactions. In a development sandbox, they enhanced custom business logic to remind their account manager about imp dates, such as bday and anniversaries, for any client or member of a client’s household.
+What is the best way the financial company can roll our their Force.com application from Development Sandbox to their account managers",By Using Salesforce to Salesforce,By exporting the application as a .csv,By deploying application using metadata,By publishing the application as a package.,By deploying application using metadata,,
+"A java program running on UNIX machine needs to connect with SFDC
+What could be used to accomplish this?
+",S-Control,Force.com Web Service API,Custom Apex Web service,VF,Force.com Web Service API,,
+"A user inserts data on a VF page that invokes an Apex Trigger, which calls an SObject.addError() method.
+Which statement is true?
+","The error message will be displayed, provided the <Apex:pageMessages> component is included in the page",The error message will be displayed next to the field causing the error.,The error message will not be displayed unless the field specific sObject.field.addError() method is used.,The error will not be displayed as the Apex Errors are only recorded in the debug log,"The error message will be displayed, provided the <Apex:pageMessages> component is included in the page",,
+"A Visual force page displays two fields named Phone Number and Email.User1 has access to Phone Number, but not to Email.User2 has access to Email, but not Phone NumberA developer needs to ensure that User1 can only see Phone Number, and User2 can only see Email.Which method can the developer use to achieve this? Discuss",A. Schema isUpdateable() method.,B. Schema isAccessible() method.,C. Schema isReadable() method.,D. Schema isCreateable() method.,B. Schema isAccessible() method.,,
+"How can the following code be utilized
+<apex:page standardCOntroller = “My_Object__c” recordSetvar = “records”>
+<apex:pageBlock>
+ <apex:pageBlockTable value = “{!records}” var = “r”>
+  <apex:column value = “{!r.Name}”/>
+ </apex:pageBlockTable>
+</apex:pageBlock>
+</apex:page>
+",As an override for the new Action for the My_Object__c object,As the target for a custom list button on the My_Object__c object,As a target for custom link on the hom tab,None of the above ,As the target for a custom list button on the My_Object__c object,,
+"List<Account> accList = [Select Id, AccountNumber From Account Limit 20];
+System.debug(‘Account Name:’+accList[0].Name);
+",Above code will fail to execute during compile time since the name field of Account is being accessed without being queried,Above code will fail to execute only during run time since the name field of Account is being accessed without being queried,Above code will throw exception,Above code will not be saved.,Above code will fail to execute only during run time since the name field of Account is being accessed without being queried,,
+"Match the Dynamic Apex features with the corresponding Syntax.
+Features:
+a. Describe Object/Field
+b. Dynamic SOQL
+c. Dynamic DML
+d. Dynamic SOSL
+Syntax:
+1. Schema.DescribeFieldResult f = Schema.sObjectType.Account.fields.AccountNumber;
+2. List<sObject> s = Database.query(querSTring);
+3. Schema.DescribeFieldResult f = Schema.sObjectType.Account.fields.AccountNumber;
+Sobject s = Database.query('SELECT AccountNumber FROM Account LIMIT 1');
+s.put(f.getsObjectField(), '12345');
+4. List<List SObject> o  = Database.search(queryString);","a-1;
+b-2;
+c-3;
+d-4;","a-1;
+b-4;
+c-3;
+d-2;","a-3;
+b-4;
+c-1;
+d-2;","a-3;
+b-2;
+c-1;
+d-4;","a-1;
+b-2;
+c-3;
+d-4;",,
+"Public static Boolean isRed(String color){
+ If(color == ‘red’) return true;
+ Else return false;
+}
+Which test method body would achieve 100 % code coverage
+",System.assert(isRed(‘blue’)); System.assert(isRed(‘red’));,System.assert(isRed(blue)); System.assert(isRed(red));,System.assert(isRed(null)); System.assert(isRed(‘red’));,System.assert(isRed(‘blue’)); System.assert(isRed(null));,System.assert(isRed(‘blue’)); System.assert(isRed(‘red’));,,
+What does the use of “With sharing” keyword enforce,Only the record sharing and FLS for the running use,Only CRUD permission for the running user,"Record sharing, FLS, CRUD permission for the running user",Only the record sharing for the running user,Only the record sharing for the running user,,
+What is a good practice for a developer to follow when writing a trigger?,A. Using synchronous callouts to call external systems,B. Have the business in the trigger itself instead of class,C. Using @future methods to perform DML operations,D. Using the Set data structure to ensure distinct records,D. Using the Set data structure to ensure distinct records,,
+What is a valid Apex statement?,"A. Integer w,x,y=123, z= abc ;",B. Map conMap = [SELECT Name FROM Contact];,C. Private static constant Double rate = 7.75;,D. Account[] acctList = new List <Account> {new Account()};,D. Account[] acctList = new List <Account> {new Account()};,,
+What is the correct way to describe how Model-View-Controller (MVC) architecture is implemented on the Salesforce platform?,A. Model: Standard and Custom Objects; View: Visualforce Pages; Controller: Apex Code,B. Model: Standard and Custom Objects; View: Visualforce Pages; Controller: s-Controls,C. Model: Schema Builder; View: List Views; Controller: Setup Console,D. Model: Apex Code; View: List Views; Controller: Setup Console,A. Model: Standard and Custom Objects; View: Visualforce Pages; Controller: Apex Code,,
+What is the maximum number of Components available on a Dashboard?,A.15,B.20 ,C.50,D.5,B.20 ,,
+What is the minimum log level needed to see user-generated debug statements?,A. DEBUG,B. FINE,C. INFO,D. WARN,A. DEBUG,,
+"What is the preferred way to reference web content, such as images, stylesheets, JavaScript, and other libraries, that is used in Visualforce pages?",A. By accessing the content from Chatter Files.,B. By uploading the content in the Documents tab.,C. By accessing the content from a third -party CON.,D. By uploading the content as a Static Resource.,D. By uploading the content as a Static Resource.,,
+What is true about dynamic dashboards:,A. A dynamic dashboard will refresh automatically several times a day,"B. If a user wants to customise the dashboard, they should use a dynamic dashboard Total","C. In dynamic dashboards, the source reports used can vary according to the user",D. A dynamic dashboard will show data according to the user's security settings,D. A dynamic dashboard will show data according to the user's security settings,,
+What is true of a partial sandbox that is not true of a full sandbox?,A. More frequent refreshes ,B. Limited to 15GB of data ,C. Use of change sets,D. Only includes necessary metadata ,0,,
+What must the Controller for a Visualforce page utilize to override the standard Opportunity view button?,A.The StandardSetController to support related lists for pagination.,B.The Opportunity StandardController for pre -built functionality.,C.A callback constructor to reference the StandardController.  ,D.A constructor that initializes a private Opportunity variable.,B.The Opportunity StandardController for pre -built functionality.,,
+"What would following line of code do?List<Account> aa = [SELECT Id, Name FROM Account WHERE Name = 'Acme'];""",A.Return List of Account,B.Return a Single Account,C.Throws an Exception ,D.None Of the above,A.Return List of Account,,
+"What would following line of code do?
+List<Account> aa = [SELECT Id, Name,(Select lastNam From Contacts) FROM Account WHERE Id IN (Select accountId From Contact)];""",A.Return List of Account onlyit has contact,B.Return a Single Account,C.Throws an Exception ,D.None Of the above,A.Return List of Account onlyit has contact,,
+Where would a developer build a managed package?,A. Developer Sandbox,B. Unlimited Edition,C. Partial Copy Sandbox,D. Developer Edition,D. Developer Edition,,
+Which code block returns the ListView of an Account object using the following debug statement? System.debug(Controller.getListViewOptions());,A. ApexPages.StandardSetController controller = new ApexPages.StandardSetController( Database.getQueryLocator( SELECT Id FROM Account LIMIT 1 ));,B. ApexPages.StandardController controller = new ApexPages.StandardController( [SELECT Id FROM Account LIMIT );,C. ApexPages.StandardController controller = new ApexPages.StandardController( Database.getQueryLocator( SELECT Id FROM Account LIMIT 1 ));,D. ApexPages.StandardController controller = new ApexPages.StandardController( [SELECT Id FROM Account LIMIT );,A. ApexPages.StandardSetController controller = new ApexPages.StandardSetController( Database.getQueryLocator( SELECT Id FROM Account LIMIT 1 ));,,
+Which code segment can be used to control when the dowork()method is called?,A. For (Trigger.isRunning t: Trigger.new){dowork();},B. If(Trigger.isRunning)dowork();,C. For (Trigger.isInsert t: Trigger.new){dowork();},D. If(Trigger.isInsert)dowork();,D. If(Trigger.isInsert)dowork();,,
+Which component is available for you to deploy using the Metadata API?,A. Case Layout,C. Case Feed Layout,D. Console Layout,None,A. Case Layout,,
+Which of the following represent correct syntax to display first name from global variable user? Select the one correct answer.,A. {User.FirstName},B. {!User.FirstName},C. $User.FirstName,D. {!$User.FirstName},D. {!$User.FirstName},,
+Which of these actions can be triggered from a Workflow?,"A. Field Update, New Task, Email Sent, Outbound Message","B. Field Update, Email Sent, APEX Trigger, New Task","C. Create Object, New Task, Email Sent,","D. Email Sent, Field Update","A. Field Update, New Task, Email Sent, Outbound Message",,
+Which scenario can be supported by Apex Webservices?,An api session invoking an  apex web service,A trigger executing  a sync callout,A trigger executing async callout,A visualforce controller performing an Https callout.,A trigger executing async callout,,
+Which statement would a developer use when creating test data for products and pricebooks?,"A. List objList= Test.loadData(Acccount.sObjectType, ',myResource');",B. IsTest(SeeAllData=false),C. Id pricebookId = Test.getStandardPricebookId();,D. Pricebook pb = new pricebook();,C. Id pricebookId = Test.getStandardPricebookId();,,
+Which tab can help in debugging SOQL warnings?,A.Log,B.Test,C.checkpoint,D.query editor,A.Log,,
+Which trigger event allows a developer to update fields in the Trigger.new list without using an additional DML statement?,A.Before insert and Before update,B.After insert,C. Only Before update,D.After update,A.Before insert and Before update,,
+Which triggers are invoked when two contacts are merged?,Only delete and update contact triggers,Only delete and update triggers on the parent account,No triggers,Delete and update contact triggers and triggers on the parent account.,Only delete and update contact triggers,,
+Which type of code represents the Controller in MVC architecture on the lightning Platform?,A.JavaScript that is used to make a menu item display itself.,B.A static resource that contains CSS and images.,C.Custom Apex and JavaScript code that is used to manipulate data.,None,C.Custom Apex and JavaScript code that is used to manipulate data.,,
+Which type of loop is not supported in Apex?,A.for,B.do..while,C. while,D. Static Loop,D. Static Loop,,
