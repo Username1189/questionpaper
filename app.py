@@ -26,7 +26,7 @@ def admin():
         results_dict = {"ID": [], "Score": []}
         results_df = pd.DataFrame.from_dict(results_dict)
         results_df.to_csv("Results.csv", index=False)
-    st.download_button("Download Results", pd.read_csv("Results.csv"), "Results.csv", "text/csv")
+    st.download_button("Download Results", pd.read_csv("Results.csv").to_csv().encode('utf-8'), "Results.csv", "text/csv")
 
 
 def login_cred():
