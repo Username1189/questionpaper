@@ -100,7 +100,17 @@ def question_paper():
         return None
     st.header('Question Paper')
     for i in range(len(state.file['Questions'])):
-        st.subheader(str(i + 1) + ". " + state.file['Questions'][i])
+        code = None
+        find_code = state.file['Questions'][i].find("<code>")
+        st.subheader(str(i + 1) + ". " + str(state.file['Questions'][i])[:find_code])
+        if find_code != -1:
+            code = str(state.file['Questions'][i])[find_code + 6: state.file['Questions'][i].find("</code>")]
+            code = code.replace(";", ";\n")
+            code = code.replace("{", "{\n")
+            code = code.replace("}", "}\n")
+            st.code(code, "apex")
+            st.subheader(str(state.file['Questions'][i])[find_code + len(code) - 1:])
+
         if str(state.file['Ans'][i]).find(',') != -1:
             selected_ans = []
             choice_names = ['A', 'B', 'C', 'D']
@@ -110,8 +120,9 @@ def question_paper():
                     selected_ans.append(str(state.file[choice_names[j]][i]))
             selected_ans.sort()
         else:
-            selected_ans = [st.radio("Answer:", ["Don't Show This", state.file['A'][i], state.file['B'][i], state.file['C'][i],
-                                          state.file['D'][i]])]
+            selected_ans = [
+                st.radio("Answer:", ["Don't Show This", state.file['A'][i], state.file['B'][i], state.file['C'][i],
+                                     state.file['D'][i]], key=str(i))]
         state.answers[i] = selected_ans
     if st.button('Submit'):
         state.done = True

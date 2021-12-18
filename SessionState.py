@@ -44,7 +44,7 @@ class SessionState(object):
         """
         for key, val in kwargs.items():
             setattr(self, key, val)
-        self.file = pd.read_csv("Questions.csv")
+        self.file = pd.read_excel("Questions.xlsx")
         self.totalScore = 0
         self.started = False
         self.showIDPass = True
