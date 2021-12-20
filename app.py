@@ -109,7 +109,8 @@ def question_paper():
             code = code.replace("{", "{\n")
             code = code.replace("}", "}\n")
             st.code(code, "apex")
-            st.subheader(str(state.file['Questions'][i])[find_code + len(code) - 1:])
+            find_code = state.file['Questions'][i].find("</code>")
+            st.subheader(str(state.file['Questions'][i])[find_code + 7:])
 
         if str(state.file['Ans'][i]).find(',') != -1:
             selected_ans = []
