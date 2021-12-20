@@ -86,7 +86,8 @@ def calc_score():
 def question_paper():
     if state.done:
         st.balloons()
-        st.header("Score: " + str(calc_score()))
+        score = calc_score()
+        st.header("Submitted Test")
         results_dict = {"ID": [], "Score": []}
         results = pd.read_csv('Results.csv')
         for a in results["ID"]:
@@ -94,7 +95,7 @@ def question_paper():
         for a in results["Score"]:
             results_dict["Score"].append(a)
         results_dict["ID"].append(state.student_id)
-        results_dict["Score"].append(calc_score())
+        results_dict["Score"].append(score)
         results_df = pd.DataFrame.from_dict(results_dict)
         results_df.to_csv("Results.csv", index=False)
         return None
